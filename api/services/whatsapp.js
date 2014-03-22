@@ -35,6 +35,8 @@ var WhatsAppService = function() {
 
 	_public.send = function(num, msg, fn) {
 
+		fn = fn || function(){};
+
 		var params = querystring.stringify({number: num, message: msg});
 		
 		request(ROOT_PY + params, function (error, response, body) {

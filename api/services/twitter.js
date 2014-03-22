@@ -20,8 +20,9 @@ var TwitterService = function() {
 		return _public;
 	};
 
-	_public.start = function() {
+	_public.start = function(listener) {
 
+		_this.listener = listener;
 		console.log("twitter> starting feed service");
 
 		User.find({
@@ -61,7 +62,6 @@ var TwitterService = function() {
 
 				for(var i=reply.length-1; i >= 0; i--){
 					if(reply[i].user.name != user.name){
-						console.log(reply[i].text);
 						_this.onTweetReceived(user, reply[i]);
 					}
 
@@ -80,22 +80,28 @@ var TwitterService = function() {
 		} else {
 
 			T.get('statuses/home_timeline', { count: 5, since_id: user.last_tweet },  function (err, reply) {
-				if(err || !reply.lenght) {
-					console.log('twitter> error catching new tweets from user'+user.id);
+
+				if(err) {
+					console.log('twitter> error catching new tweets from user: ' + (err.message || err.toString()));
 				}
 
-				for(var i=reply.length-2; i >= 0; i--){
-					if(reply[i].user.name != user.name){
-						console.log(reply[i].text);
-						_this.onTweetReceived(user, reply[i]);
-					}
+				else if(!reply || !reply.length) {
+					console.log('twitter> no tweets found for user '+user.id);
+				}
 
-					if(i === 0){
-						user.last_tweet = reply[i].id;
-						user.save(function(err) {
-							if(err) 
-								console.log('twitter> error saving last tweet id:'+reply[i].id);
-						});
+				else {	
+					for(var i = reply.length-2; i >= 0; i--){
+						if(reply[i].user.name != user.name){
+							_this.onTweetReceived(user, reply[i]);
+						}
+
+						if(i === 0){
+							user.last_tweet = reply[i].id;
+							user.save(function(err) {
+								if(err) 
+									console.log('twitter> error saving last tweet id:'+reply[i].id);
+							});
+						}
 					}
 				}
 			})
@@ -103,8 +109,8 @@ var TwitterService = function() {
 	}
 
 	_this.onTweetReceived = function(user, tweet) {
-		bot.onTweetReceived(user, tweet);
-	};
+		_this.listener(user, tweet);
+	}
 
 	_public.send = function(user, text) {
 		console.log("xupa joao");

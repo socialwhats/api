@@ -30,7 +30,9 @@ var BotService = function() {
 		mail.start();
 
 		// Start twitter service
-		twitter.start();
+		twitter.start(function(user, tweet) {
+			_public.onTweetReceived(user, tweet);
+		});
 	}
 
 	_public.onEmailReceived = function(thread, email) {
@@ -100,9 +102,15 @@ var BotService = function() {
 	}
 
 	_public.onTweetReceived = function(user, tweet) {
+
 		console.log("bot> new tweet received by user: " + user.name);
 		console.log("bot> tweet: " + tweet.text);
-		//whatsapp.send(user.number, tweet.text);
+
+		whatsapp.send(user.number, tweet.text, function(err) {
+
+			if(err)
+				console.log("bot> error fowarding tweet: " + err.message || err.toString());
+		});
 	}
 
 	return _this.init();
