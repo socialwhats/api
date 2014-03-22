@@ -113,8 +113,20 @@ var TwitterService = function() {
 	}
 
 	_public.send = function(user, text) {
-		console.log("xupa joao");
-		return null;
+		var T = new Twit({
+		    consumer_key:         '7oeukZFRvCs6fyxrpXvNgA', 
+		    consumer_secret:      '1ue2gGU37AxYI8NkarcYAN7mFVk83jP3zr2Yy7dPQw',
+		    access_token:         user.social[0].token,
+		    access_token_secret:  user.social[0].secret
+		});
+
+		T.post('statuses/update', { status: text }, function(err, data) {
+		  	if(err) {
+		  		console.log('twitter> error creating new tweet');
+		  	} else {
+		  		console.log(data);
+		  	}
+		})
 	}
 
 	return _this.init();
