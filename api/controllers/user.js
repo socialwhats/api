@@ -1,8 +1,19 @@
 var input = require("../adapters/input");
 var social = require("../adapters/social");
 var mongoose = require('../adapters/mongoose');
+var OAuth= require('oauth').OAuth;
 
 var User = mongoose.model('user');
+
+var oa = new OAuth(
+				'https://api.twitter.com/oauth/request_token',
+				'https://api.twitter.com/oauth/access_token',
+				'7oeukZFRvCs6fyxrpXvNgA',
+				'1ue2gGU37AxYI8NkarcYAN7mFVk83jP3zr2Yy7dPQw',
+				'1.0A',
+      			'http://www.socialwhats.co/twitter/callback',
+      			'HMAC-SHA1'	
+		);
 
 module.exports = {
 
@@ -123,8 +134,6 @@ module.exports = {
 
 	social_login: function(req, res) {
 
-		var params = ['provider', 'social'];
-
 		if(!req.param('provider') || !req.param('token')) {
 
 			res.json({
@@ -226,5 +235,122 @@ module.exports = {
 				})
 			}
 		})
+	},
+
+	twitter_request: function(req, res) {
+
+		oa.getOAuthRequestToken(function(error, oauth_token, oauth_token_secret, results){
+			if (error) {
+				console.log(error);
+				res.send("yeah no. didn't work.")
+			}
+			else {
+				req.session.oauth = {};
+				req.session.oauth.token = oauth_token;
+				console.log('oauth.token: ' + req.session.oauth.token);
+				req.session.oauth.token_secret = oauth_token_secret;
+				console.log('oauth.token_secret: ' + req.session.oauth.token_secret);
+				res.redirect('https://twitter.com/oauth/authenticate?oauth_token='+oauth_token)
+			}
+		});
+	},
+
+	twitter_callback: function(req, res) {
+
+		if(!req.param('oauth_token') || !req.param('oauth_verifier')) {
+
+			res.json({
+
+				result: 'error',
+				exception: {
+					message: 'Missing required params',
+					error: {
+						missing_fields: ['oauth', 'verifier']
+					}
+				}
+			});
+		}
+
+		var token = req.param('oauth_token');
+		var verifier = req.param('oauth_verifier');
+
+		if (req.session.oauth) {
+			
+			var oauth = req.session.oauth;
+			req.session.oauth.verifier = verifier;
+
+			oa.getOAuthAccessToken(oauth.token,oauth.token_secret,oauth.verifier, function(error, oauth_access_token, oauth_access_token_secret, results){
+				if (error){
+					console.log(error);
+					res.send("yeah something broke.");
+				} else {
+					req.session.oauth.access_token = oauth_access_token;
+					req.session.oauth,access_token_secret = oauth_access_token_secret;
+
+					var access = oauth_access_token;
+					var secret = oauth_access_token_secret;
+					
+					//SOCIAL LOGIN
+
+					var provider;
+
+					try {
+						provider = social.provider('twitter');
+					}
+
+					catch(e) {
+						return res.json({
+
+							result: 'error',
+							exception: {
+								message: 'The social provider twitter does not exist',
+								error: {
+									name: e.name,
+									message: e.message,
+									line: e.stack
+								}
+							}
+						})
+					}
+
+					provider.twitterLogin(access, secret, function(err, socialInfo) {
+
+						if(err) {
+							return res.json({
+								result: 'error',
+								exception: err
+							});
+						}
+
+						User.socialAuth(socialInfo, function(err, me) {
+
+							if(err) {
+
+								return res.json({
+									result: 'error',
+									exception: err
+								});
+							}
+
+							else {
+
+								return res.json({
+									result: 'success',
+									user: me
+								})
+							}
+
+						})
+					});
+
+					// END SOCIAL LOGIN
+
+					res.send("worked. nice one.");
+				}
+			});
+		} 
+		else {
+			console.log("you're not supposed to be here.");
+		}
 	}
 }

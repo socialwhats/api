@@ -40,6 +40,16 @@ module.exports = {
 			filters: ["authenticated"]
 		},
 
+		"/user/twtreq": {
+			controller:"user",
+			method:"twitter_request"
+		},
+
+		"/user/twtcallback": {
+			controller:"user",
+			method:"twitter_callback"
+		},
+
 		"/admin": "/admin/info",
 
 		"/admin/info": {

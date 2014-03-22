@@ -25,6 +25,16 @@ var SocialProvider = function(name, obj) {
 		_this.provider.login.apply(_this.provider, [token, fn]);
 	}
 
+	_public.twitterLogin = function(token, secret, fn) {
+
+		fn = fn || function(){};
+
+		if(!_this.provider.twitterLogin)
+			throw new Error("Provider 'twitterLogin' method not found");
+
+		_this.provider.twitterLogin.apply(_this.provider, [token, secret, fn]);
+	}	
+
 	return _this.init();
 };
 
