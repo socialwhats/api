@@ -4,7 +4,7 @@ var sendgrid = require("../adapters/sendgrid");
 
 var Bot = mongoose.model("bot");
 
-var BotService = function() {
+var BotService = function(ack) {
 
 	if ( arguments.callee._singletonInstance )
 		return arguments.callee._singletonInstance;
@@ -12,6 +12,8 @@ var BotService = function() {
 
 	var _this = this;
 	var _public = {};
+
+	_this.ack = ack;
 
 	_this.init = function() {
 		return _public;
@@ -32,6 +34,12 @@ var BotService = function() {
 		return null;
 	}
 
+	_public.onGreetingReceived = function(message) {
+
+
+
+	}
+
 	_public.onMessageReceived = function(message) {
 
 		// TODO: send emails using sendgrid
@@ -41,4 +49,4 @@ var BotService = function() {
 	return _this.init();
 }
 
-module.exports = new BotService();
+module.exports = new BotService(ack);
