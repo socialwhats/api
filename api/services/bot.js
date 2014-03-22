@@ -14,15 +14,16 @@ var BotService = function() {
 	var _public = {};
 
 	_this.init = function() {
-
-		// bind messages
 		return _public;
 	}
 
 	_public.start = function(){
 
 		// Start whatsapp middleware
-		whatsapp.start();
+		whatsapp.start(function(number, message) {
+			console.log("nois")
+			_public.onMessageReceived("thread", number, message);
+		});
 
 		// Start mail middleware
 		mail.start();
@@ -38,8 +39,9 @@ var BotService = function() {
 		return null;
 	}
 
-	_public.onMessageReceived = function(thread, message) {
-		return null;
+	_public.onMessageReceived = function(thread, num, message) {
+		console.log("bot> message received from " + num);
+		mail.send("luiseduardo14@gmail.com", num, message)
 	}
 
 	_this.syncSend = function(message) {
@@ -54,7 +56,11 @@ var BotService = function() {
 	}
 
 	// ----------- Binded Methods -----------------//
-	_this.onGreetingReceived = function(message) {
+	_this.sendGreeting = function(destination) {
+		
+	}
+
+	_this.onGreetingReceived = function() {
 		
 	}
 

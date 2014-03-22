@@ -1,9 +1,13 @@
+var request = require('request');
+var querystring = require("querystring");
 var util = require('util');
 var path = require('path');
-var child_process = require('child_process');
-var zerorpc = require("zerorpc");
 
-var WhatsAppBridge = function(src) {
+var bot = require("./bot");
+
+var ROOT_PY = 'http://localhost:8080/'
+
+var WhatsAppService = function() {
 
 	if ( arguments.callee._singletonInstance )
     	return arguments.callee._singletonInstance;
@@ -14,68 +18,40 @@ var WhatsAppBridge = function(src) {
 
 	_this.init = function(){
 
+		_this.listener = function(){};
 		console.log("whatsapp> starting service");
 		return _public;
 	}
 
-	_public.start = function() {
+	_public.start = function(listener) {
 
+		_this.listener = listener;
 		console.log("whatsapp> preparing python listener");
 	}
 
-	_this.onReceiveMessage = function(msg) {
-		return null;
-	}
-
-	_this.spawn = function(params, fn) {
-
-		var cli_file = src + "/yowsup-cli";
-		var config_file  = src + "/config";
-
-		var params = [cli_file, "-c " + config_file].concat(params);
-		var s = child_process.spawn("python", params);
-
-		s.stdout.on('data', function (data) {
-			fn(null, data);
-		});
-
-		s.stderr.on('data', function (data) {
-			fn(data, null)
-		});
-
-		s.on('close', function (code) {
-			console.log('whatsapp> child process exited with code ' + code);
-		});
-	}
-
-	_this.exec = function(params, fn) {
-
-		var cli_file = src + "/yowsup-cli";
-		var config_file  = src + "/config";
-
-		var params = [cli_file, " -c " + config_file].concat(params);
-		child_process.exec("python " + params.join(" "), params, fn);
-	}
-
-	_public.requestCode = function(fn) {
-		_this.exec(["--requestcode sms"], function(err, stdout, stderr) {
-			fn(err, stdout);
-		})
-	}
-
-	_public.register = function(request_code, fn) {
-		_this.exec(["-r" + request_code], function(err, stdout, stderr) {
-			fn(err, stdout);
-		})
+	_public.onMessageReceived = function(thread, number, message) {
+		_this.listener(thread, number, message);
 	}
 
 	_public.send = function(num, msg, fn) {
-		_this.exec(["--send ", num, ' "' + msg + '"'], function(err, stdout, stderr) {
-			fn(err, stdout);
+
+		var params = querystring.stringify({number: num, message: msg});
+		
+		request(ROOT_PY + params, function (error, response, body) {
+
+			if (!error && response.statusCode == 200) {
+
+				console.log("whatsapp> message sent")
+				fn(null, true)
+			}
+
+			else {
+				fn(error, null)
+			}
 		})
 	}
 
 	return _this.init();
 }
 
-module.exports = new WhatsAppBridge(path.join(__dirname, '../../py/yowsup'));
+module.exports = new WhatsAppService();

@@ -1,4 +1,4 @@
-var inbox = require("../adapters/sendgrid");
+var sendgrid = require("../adapters/sendgrid");
 var inbox = require("inbox");
 
 var bot = require("./bot");
@@ -60,7 +60,7 @@ var MailService = function(config) {
 		if(error) 
 			throw error;
 
-		console.log("mail> inbox message count: " + info.count + "\n\n");
+		console.log("mail> inbox message count: " + info.count + "\n");
 		_this.client.on("new", _this.onNewMessage);
 	};
 
@@ -77,6 +77,10 @@ var MailService = function(config) {
 
 		// parse email
 		_this.client.createMessageStream(message.UID).pipe(mailparser);
+	}
+
+	_public.send = function(to, subject, message, fn) {
+		sendgrid.send(to, subject, message, fn);
 	}
 
 	return _this.init();

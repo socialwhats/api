@@ -57,6 +57,15 @@ module.exports = {
 
 			filters: ["authenticated", "admin"]
 		},
+
+		"/whatsapp/on_message_received": {
+
+			controller: "whatsapp",
+			method: "onMessageReceived",
+
+			filters: []
+		},
+
 	},
 
 	post: {
