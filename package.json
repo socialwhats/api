@@ -26,6 +26,11 @@
     "bcrypt": "~0.7.7",
     "mongoose-schema-extend": "~0.1.7",
     "fbgraph": "~0.2.9",
-    "request": "~2.34.0"
+    "request": "~2.34.0",
+    "sendgrid": "~1.0.2",
+    "mailparser": "~0.4.1",
+    "inbox": "~1.1.48",
+    "zerorpc": "~0.9.3",
+    "socket.io": "~0.9.16"
   }
 }
