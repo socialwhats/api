@@ -30,6 +30,6 @@ describe("ack service", function(){
 			done();
 		})
 
-		ack.recognize("saudações");
+		ack.recognize("HI");
 	});
 })

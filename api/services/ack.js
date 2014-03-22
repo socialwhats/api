@@ -30,17 +30,24 @@ var BotAckService = function(map) {
 
 	_this.checkMethod = function(content) {
 
+		content = S(content).capitalize().s;
+
 		for(var k in map) {
 
+			var capitalizedKey = S(k).capitalize().s
+
 			// Check key contains
-			if(S(content).contains(k)) {
+			if(S(content).contains(capitalizedKey)) {
 				return {key: k, value: map[k]};
 			}
 
 			var aliases = map[k].alias || [];
 
 			for(var i = 0; i < aliases.length; i++) {
-				if(S(content).contains(aliases[i])) {
+
+				var capitalizedAlias = S(aliases[i]).capitalize().s
+
+				if(S(content).contains(capitalizedAlias)) {
 					return {key: k, value: map[k]};
 				}
 			}
