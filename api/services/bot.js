@@ -44,15 +44,9 @@ var BotService = function() {
 		mail.send("luiseduardo14@gmail.com", num, message)
 	}
 
-	_this.syncSend = function(message) {
-
-		// send email
-		mail.send(message);
-
-		// send whatsapp
-		whatsapp.send(destination, message, function(){
-			console.log("bot> email fowarded to whatsapp successfully!\n");
-		});
+	_public.onTweetReceived = function(user, tweet) {
+		console.log("bot> message received from " + num);
+		mail.send("luiseduardo14@gmail.com", num, message)
 	}
 
 	// ----------- Binded Methods -----------------//
