@@ -5,7 +5,7 @@ var path = require('path');
 
 var bot = require("./bot");
 
-var ROOT_PY = 'http://localhost:8080/'
+var ROOT_PY = 'http://localhost:8080/?'
 
 var WhatsAppService = function() {
 
@@ -37,7 +37,7 @@ var WhatsAppService = function() {
 
 		fn = fn || function(){};
 
-		var params = querystring.stringify({number: num, message: msg});
+		var params = querystring.stringify({dest: num, message: msg});
 		
 		request(ROOT_PY + params, function (error, response, body) {
 

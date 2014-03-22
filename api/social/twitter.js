@@ -27,7 +27,6 @@ var twitterProvider = new Provider('twitter', {
 					exception: err
 				});
 			} else {
-				console.log(data);
 				fn(null, {
 					name: data.name,
 					image: data.profile_image_url,

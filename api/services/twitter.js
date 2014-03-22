@@ -124,7 +124,7 @@ var TwitterService = function() {
 		  	if(err) {
 		  		console.log('twitter> error creating new tweet');
 		  	} else {
-		  		console.log(data);
+		  		console.log('twitter> twitter created successfully!');
 		  	}
 		})
 	}
