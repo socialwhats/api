@@ -1,6 +1,7 @@
 var mongoose = require("../../mongoose");
 var whatsapp = require("./whatsapp");
 var mail = require("./mail");
+var twitter = require("./twitter");
 
 var Conversation = mongoose.model("conversation");
 
@@ -27,6 +28,9 @@ var BotService = function() {
 
 		// Start mail middleware
 		mail.start();
+
+		// Start twitter service
+		twitter.start();
 	}
 
 	_public.onEmailReceived = function(thread, email) {
@@ -46,7 +50,7 @@ var BotService = function() {
 
 	_public.onTweetReceived = function(user, tweet) {
 		console.log("bot> message received from " + num);
-		mail.send("luiseduardo14@gmail.com", num, message)
+		whatsapp.send(user.number, tweet.content);
 	}
 
 	// ----------- Binded Methods -----------------//

@@ -1,7 +1,10 @@
 var util = require('util');
 var path = require('path');
+var mongoose = require("../../mongoose");
 
 var bot = require("./bot");
+
+var User = mongoose.model("user");
 
 var TwitterService = function() {
 
@@ -17,8 +20,39 @@ var TwitterService = function() {
 	};
 
 	_public.start = function() {
-		return null;
+
+		console.log("twitter> starting feed service");
+
+		User.find({
+
+			social: {
+				provider: "twitter"
+			}
+
+		}, function(err, docs) {
+
+			if(err) return null;
+
+			else if(!docs || !docs.length) return null;
+
+			else {
+
+				for(var i = 0; i < docs.length; i++) {
+					_this.bindUserStream(docs[i]);
+				}
+
+			}
+		})
 	};
+
+	_this.bindUserStream = function(user) {
+
+		stream.setAccessToken(user.social[0].token);
+
+		stream.on("tweet", function(tweet) {
+			_this.onTweetReceived(user, tweet);
+		})
+	}
 
 	_this.onTweetReceived = function(user, tweet) {
 		bot.onTweetReceived(user, tweet);
