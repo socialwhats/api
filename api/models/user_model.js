@@ -53,7 +53,13 @@ var UserSchema = new Schema({
 
 	last_tweet: Number,	
 	uri: String,
-	image: String
+	image: String,
+
+	// TODO: REMOVER MEU CEL DO HARDCODED
+	number: {
+		type: String,
+		default: "5519983656062"
+	}
 
 }, {
 	toObject: {
@@ -177,7 +183,12 @@ UserSchema.statics.socialAuth = function(info, fn) {
 				fn(null, user);
 		});
 	})
+};
 
+UserSchema.statics.findByPhone = function(num, fn) {
+	this.findOne({
+		number: num
+	}, fn);
 };
 
 UserSchema.methods.toJSON = function() {

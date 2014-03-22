@@ -106,6 +106,11 @@ var TwitterService = function() {
 		bot.onTweetReceived(user, tweet);
 	};
 
+	_public.send = function(user, text) {
+		console.log("xupa joao");
+		return null;
+	}
+
 	return _this.init();
 }
 

@@ -29,8 +29,8 @@ var WhatsAppService = function() {
 		console.log("whatsapp> preparing python listener");
 	}
 
-	_public.onMessageReceived = function(thread, number, message) {
-		_this.listener(thread, number, message);
+	_public.onMessageReceived = function(messageId, number, content) {
+		_this.listener(messageId, number, content);
 	}
 
 	_public.send = function(num, msg, fn) {
@@ -41,7 +41,7 @@ var WhatsAppService = function() {
 
 			if (!error && response.statusCode == 200) {
 
-				console.log("whatsapp> message sent")
+				console.log("whatsapp> message sent to " + num)
 				fn(null, true)
 			}
 

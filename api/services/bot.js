@@ -4,6 +4,7 @@ var mail = require("./mail");
 var twitter = require("./twitter");
 
 var Conversation = mongoose.model("conversation");
+var User = mongoose.model("user");
 
 var BotService = function() {
 
@@ -21,9 +22,8 @@ var BotService = function() {
 	_public.start = function(){
 
 		// Start whatsapp middleware
-		whatsapp.start(function(number, message) {
-			console.log("nois")
-			_public.onMessageReceived("thread", number, message);
+		whatsapp.start(function(messageId, number, message) {
+			_public.onMessageReceived(messageId, number, message);
 		});
 
 		// Start mail middleware
@@ -43,23 +43,66 @@ var BotService = function() {
 		return null;
 	}
 
-	_public.onMessageReceived = function(thread, num, message) {
-		console.log("bot> message received from " + num);
-		mail.send("luiseduardo14@gmail.com", num, message)
+	_public.onMessageReceived = function(messageId, num, content) {
+
+		num = num.replace(/\D/g,'');
+
+		console.log("bot> message received from " + num + " with id=" + messageId);
+
+		Conversation.getByWhatsAppID(num, function(err, conversation) {
+
+			console.log("bot> conversation found with id: " + conversation._id)
+
+			conversation.pushMessage({
+
+				provider: "whatsapp", 
+				id: messageId, 
+				from: {
+					number: num
+				}, 
+				content: content
+
+			}, function(err, message) {
+
+				if(err) {
+					console.log("bot> error pushing message (" + messageId + ") to conversation (" + conversation._id + ")");
+					return;
+				}
+
+				else if(!message.exists) {
+
+					// send to all recipients through email
+					console.log("bot> forwarding message to twitter...")
+
+					// find user by phone number
+					User.findByPhone(num, function(err, me) {
+
+						if(err) {
+							console.log("bot> error pushing message (" + messageId + ") to twitter");
+							return;
+						}
+
+						else if(me) {
+							twitter.send(me, content);
+						}
+
+						else {
+							console.log("bot> no user found with specified number");
+						}
+					})
+				}
+
+				else {
+					console.log("bot> message received already exists... nothing to be done")
+				}
+			});
+		})
 	}
 
 	_public.onTweetReceived = function(user, tweet) {
-		console.log("bot> message received from " + num);
-		whatsapp.send(user.number, tweet.content);
-	}
-
-	// ----------- Binded Methods -----------------//
-	_this.sendGreeting = function(destination) {
-		
-	}
-
-	_this.onGreetingReceived = function() {
-		
+		console.log("bot> new tweet received by user: " + user.name);
+		console.log("bot> tweet: " + tweet.text);
+		//whatsapp.send(user.number, tweet.text);
 	}
 
 	return _this.init();

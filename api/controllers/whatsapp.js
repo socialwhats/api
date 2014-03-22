@@ -11,7 +11,7 @@ module.exports = {
 			})
 		}
 
-		whatsapp.onMessageReceived(req.param("number"), req.param("message"));
+		whatsapp.onMessageReceived(req.param("message_id"), req.param("number"), req.param("message"));
 
 		res.json({
 			result: "success"

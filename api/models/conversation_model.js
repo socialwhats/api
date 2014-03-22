@@ -16,23 +16,8 @@ var ConversationSchema = new Schema({
 	},
 
 	messages: [{
-
-		from: {
-			email: String,
-			number: String,
-		},
-
-		content: String,
-
-		created_at: {
-			type: Date,
-			default: Date.now
-		},
-
-		forwarded: {
-			type: Boolean,
-			default: false
-		}
+		type: Schema.ObjectId,
+		ref: "message"
 	}],
 
 	recipients: [{
@@ -120,6 +105,54 @@ ConversationSchema.statics.getByWhatsAppID = function(id, fn) {
 		}
 		else
 			fn(null, conv)
+	})
+}
+
+ConversationSchema.methods.pushMessage = function(msg, fn) {
+
+	var _this = this;
+	var Message = mongoose.model("message");
+
+	Message.find({
+
+		source: {
+			provider: msg.provider,
+			id: msg.id
+		}
+
+	}, function(err, docs) {
+
+		if(err)
+			fn(err, null)
+
+		else if(docs.length) {
+			fn(null, {exists: true});
+		}
+
+		else {
+
+			var message = new Message({
+
+				source: {
+					provider: msg.provider,
+					id: msg.id
+				},
+
+				from: msg.from,
+				content: msg.content
+			});
+
+			_this.messages.push(message);
+
+			_this.save(function(err) {
+
+				if(err)
+					fn(err, null);
+
+				else 
+					fn(null, {exists: false});
+			})
+		}
 	})
 }
 
