@@ -1,5 +1,7 @@
-var bot = require("./bot");
+var inbox = require("../adapters/sendgrid");
 var inbox = require("inbox");
+
+var bot = require("./bot");
 
 var MailParser = require("mailparser").MailParser;
 var mailparser = new MailParser();
@@ -70,7 +72,7 @@ var MailService = function(config) {
 		var first = false;
 
 		mailparser.on("end", function(mail_object){
-			bot.onEmailReceived(mail_object);
+			bot.onEmailReceived(message.xGMThreadId, mail_object);
 		});
 
 		// parse email

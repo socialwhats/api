@@ -18,20 +18,9 @@ var WhatsAppBridge = function(src) {
 		return _public;
 	}
 
-	_public.startListening = function() {
+	_public.start = function() {
 
 		console.log("whatsapp> preparing python listener");
-
-		_this.spawn(["-l"], function(err, line) {
-
-			if(err) {
-				console.log("whatsapp> Error listening:" + err.toString())
-			}
-
-			else {
-				console.log("whatsapp> New message: " + line)
-			}
-		})
 	}
 
 	_this.onReceiveMessage = function(msg) {

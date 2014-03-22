@@ -1,10 +1,10 @@
-var mongoose = require("../services/mongoose");
-var whatsapp = require("../services/whatsapp");
-var sendgrid = require("../adapters/sendgrid");
+var mongoose = require("../../mongoose");
+var whatsapp = require("./whatsapp");
+var mail = require("./mail");
 
-var Bot = mongoose.model("bot");
+var Conversation = mongoose.model("conversation");
 
-var BotService = function(ack) {
+var BotService = function() {
 
 	if ( arguments.callee._singletonInstance )
 		return arguments.callee._singletonInstance;
@@ -13,40 +13,52 @@ var BotService = function(ack) {
 	var _this = this;
 	var _public = {};
 
-	_this.ack = ack;
-
 	_this.init = function() {
+
+		// bind messages
 		return _public;
 	}
 
-	_public.onEmailReceived = function(email) {
+	_public.start = function(){
+
+		// Start whatsapp middleware
+		whatsapp.start();
+
+		// Start mail middleware
+		mail.start();
+	}
+
+	_public.onEmailReceived = function(thread, email) {
 
 		console.log("bot> email received from " + email.from[0].name + "(" + email.from.address + ")");
 
-		// TODO: parse email and strip reply content
 		var destination = email.subject.replace(/\D/g,'');
 		var message = email.from[0].name + ": " + email.text;
 
+		return null;
+	}
+
+	_public.onMessageReceived = function(thread, message) {
+		return null;
+	}
+
+	_this.syncSend = function(message) {
+
+		// send email
+		mail.send(message);
+
+		// send whatsapp
 		whatsapp.send(destination, message, function(){
 			console.log("bot> email fowarded to whatsapp successfully!\n");
 		});
-
-		return null;
 	}
 
-	_public.onGreetingReceived = function(message) {
-
-
-
-	}
-
-	_public.onMessageReceived = function(message) {
-
-		// TODO: send emails using sendgrid
-		return null;
+	// ----------- Binded Methods -----------------//
+	_this.onGreetingReceived = function(message) {
+		
 	}
 
 	return _this.init();
 }
 
-module.exports = new BotService(ack);
+module.exports = new BotService();

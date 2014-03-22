@@ -1,0 +1,17 @@
+{
+	"imap": {
+		"provider": "gmail",
+		"host": "imap.gmail.com",
+		"port": 993,
+		"email": "zapzapbot@gmail.com",
+		"password": "wazupdog"
+	},
+
+	"google_api": {
+		"client_id": "1025908636215-ui2c131d6a21tnmg5tk6l1vnn4mq914j.apps.googleusercontent.com",
+		"client_email": "1025908636215-ui2c131d6a21tnmg5tk6l1vnn4mq914j@developer.gserviceaccount.com",
+		"client_secret": "H-rtcqfrpQcwErWE8JyX_-ux",
+		"refresh_token": "1/Jakv_cOax6CTa1DzGna1OIOu-T_Q4qOJCFFeDNUcguQ",
+		"access_token": "ya29.1.AADtN_VSM0ZaBOLsWwxm05I4YkPTMckQoRKV8GmEDYYfprU0xzjZqL-RWfs1GxoJtQpEbg"
+	}
+}

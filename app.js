@@ -11,6 +11,9 @@ var api = require('./api');
 var settings = require("./config/settings");
 var mongoose = require('./mongoose');
 
+// Services
+var bot = require("./api/services/bot");
+
 // Show welcome message
 var welcome = require("./util/welcome");
 welcome.init(console);
@@ -45,4 +48,7 @@ http.createServer(app).listen(app.get('port'), function() {
 
 	// Show server port
 	welcome.server(console, app.get('port'));
+
+	// Start bot
+	bot.start();
 });

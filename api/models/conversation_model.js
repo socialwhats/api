@@ -49,4 +49,78 @@ var ConversationSchema = new Schema({
 	}]
 });
 
+ConversationSchema.statics.getByGmailID = function(id, fn) {
+
+	var _Conversation = this;
+
+	_Conversation.findOne({
+
+		gmail: {
+			thread_id: id
+		}
+
+	}, function(err, conversation) {
+
+		if(err)
+			return fn(err, null)
+
+		else if(!conversation) {
+
+			var conv = new _Conversation({
+
+				gmail: {
+					thread_id: id
+				}
+			})
+
+			conv.save(function(err) {
+
+				if(err)
+					return fn(err, null)
+
+				fn(null, conv)
+			})
+		}
+		else
+			fn(null, conv)
+	})
+}
+
+ConversationSchema.statics.getByWhatsAppID = function(id, fn) {
+
+	var _Conversation = this;
+
+	_Conversation.findOne({
+
+		whatsapp: {
+			thread_id: id
+		}
+
+	}, function(err, conversation) {
+
+		if(err)
+			return fn(err, null)
+
+		else if(!conversation) {
+
+			var conv = new _Conversation({
+
+				whatsapp: {
+					thread_id: id
+				}
+			})
+
+			conv.save(function(err) {
+				
+				if(err)
+					return fn(err, null)
+
+				fn(null, conv)
+			})
+		}
+		else
+			fn(null, conv)
+	})
+}
+
 module.exports = ConversationSchema;
