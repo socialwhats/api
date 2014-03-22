@@ -51,7 +51,7 @@ var UserSchema = new Schema({
 
 		provider: {
 			type: String,
-			enum: ['email', 'google', 'facebook'],
+			enum: ['email', 'google', 'facebook', 'instagram', 'twitter'],
 			default: 'email'
 		}
 	}],
