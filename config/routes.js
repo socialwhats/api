@@ -76,6 +76,14 @@ module.exports = {
 			filters: []
 		},
 
+		"/whatsapp/on_group_message_received": {
+
+			controller: "whatsapp",
+			method: "onGroupMessageReceived",
+
+			filters: []
+		},
+
 	},
 
 	post: {
