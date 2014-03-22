@@ -33,7 +33,8 @@ var twitterProvider = new Provider('twitter', {
 					image: data.profile_image_url,
 					social: {
 						provider: "twitter",
-						token: token
+						token: token,
+						secret: secret,
 					}
 				});
 			}

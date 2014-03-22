@@ -40,13 +40,18 @@ var UserSchema = new Schema({
 			type: String,
 		},
 
+		secret: {
+			type: String,
+		},
+
 		provider: {
 			type: String,
 			enum: ['email', 'google', 'facebook', 'instagram', 'twitter'],
 			default: 'email'
 		}
 	}],
-	
+
+	last_tweet: Number,	
 	uri: String,
 	image: String
 
@@ -153,7 +158,8 @@ UserSchema.statics.socialAuth = function(info, fn) {
 
 				for(var i = 0; i < user.social.length; i++) {
 					if(user.social[i].provider === info.social.provider) {
-						user.social.token = info.social.token
+						user.social.token = info.social.token;
+						user.social.secret = info.social.secret;
 						found = true;
 					}
 				}
