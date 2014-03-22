@@ -1,0 +1,26 @@
+{
+	"state"	: "development",
+
+	"development": {
+
+		"port": 3000,
+
+		"social": {
+			
+			"facebook": {
+				"app_id": "630407523697062"
+			}
+		},
+
+		"db": {
+
+			"protocol": "mongodb://",
+
+			"user": "root",
+			"password": "",
+
+			"db": "boilerplate",
+			"host": "localhost"
+		}
+	}
+}

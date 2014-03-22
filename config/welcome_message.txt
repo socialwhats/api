@@ -1,0 +1,10 @@
+
+           .-""-.
+          /[] _ _\
+         _|_o_LII|_             socialwhats
+        / | ==== | \     ===========================
+        |_| ==== |_|                          v%s
+         ||" ||  ||      
+         ||LI  o ||      
+         ||'----'||      Application is online!
+        /__|    |__\     Server listening on port %s
