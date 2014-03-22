@@ -15,17 +15,8 @@ var UserSchema = new Schema({
 
 	email: {
 
-		required: true,
-
-		type: String,
-		validate: [
-			check('isEmail'),
-			check('len', 3)
-		],
-
-		index: { 
-			unique: true 
-		}
+		required: false,
+		type: String
 	},
 
 	password: {

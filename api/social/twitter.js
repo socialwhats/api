@@ -3,21 +3,42 @@ var request = require("request");
 
 var Provider = require('./provider');
 
+var Twit = require('twit')
+
 var twitterProvider = new Provider('twitter', {
 
-	twitterLogin: function(token, token_sct, fn) {
+	twitterLogin: function(token, secret, fn) {
 
 		var _this = this;
 		fn = fn || function(){};
 
+		var T = new Twit({
+		    consumer_key:         '7oeukZFRvCs6fyxrpXvNgA', 
+		    consumer_secret:      '1ue2gGU37AxYI8NkarcYAN7mFVk83jP3zr2Yy7dPQw',
+		    access_token:         token,
+		    access_token_secret:  secret
+		});
+
 		//faz requisição passando as infos do app e os tokens do usuário
-
-		//retorno objeto no callback
-		fn(null, {
-			name:
-			email:
-
+		T.get('account/verify_credentials', function(err, data){
+			if(err) {
+				return res.json({
+					result:'error',
+					exception: err
+				});
+			} else {
+				console.log(data);
+				fn(null, {
+					name: data.name,
+					image: data.profile_image_url,
+					social: {
+						provider: "twitter",
+						token: token
+					}
+				});
+			}
 		})
 	}
-
 })
+
+module.exports = twitterProvider;
