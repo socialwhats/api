@@ -15,12 +15,13 @@
 		"db": {
 
 			"protocol": "mongodb://",
+			"port": 27017,
 
 			"user": "root",
 			"password": "",
 
 			"db": "boilerplate",
-			"host": "localhost"
+			"host": "www.socialwhats.co"
 		}
 	}
 }
