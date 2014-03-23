@@ -44,15 +44,17 @@ var WhatsAppService = function() {
 
 	_public.onGroupMessageReceived = function(group_id, message_id, content, author) {
 
+		console.log("whatsapp> on message group received");
+
 		var incomingMessage = {
-			group_id: req.param("number"),
-			message_id: req.param("message_id"),
-			content: req.param("content"),
-			author: req.param("author")
+			group_id: group_id,
+			message_id: message_id,
+			content: content,
+			author: author
 		}
 
 		groupMessageQueue[incomingMessage.group_id] = incomingMessage;
-		requestGroupInfo(incomingMessage.group_id);
+		_public.requestGroupInfo(incomingMessage.group_id);
 	}
 
 	_public.requestGroupInfo = function(group_id) {

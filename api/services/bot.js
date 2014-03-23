@@ -43,7 +43,7 @@ var BotService = function() {
 		});
 
 		// Start twitter service
-		twitter.start(_public.onTweetReceived);
+		//twitter.start(_public.onTweetReceived);
 	}
 
 	_public.onEmailReceived = function(thread, email) {
@@ -51,11 +51,50 @@ var BotService = function() {
 		console.log("bot> email received from " + email.from[0].name + "(" + email.from.address + ")");
 
 		var subject = email.subject;
+		var whatsapp_id = S(email.subject).replaceAll('WhatsApp Conversation - ', '').s;
 		var message = email.from[0].name + ": " + email.text;
 
-		whatsapp.send("5519983656062", message, function(err) {
-			if(err)
-				console.log("bot> error fowarding email: " + err.message || err.toString());
+		Conversation.getByWhatsAppID(whatsapp_id, function(err, conversation) {
+
+			console.log("bot> conversation found with id: " + conversation._id)
+
+			conversation.pushMessage({
+
+				provider: "whatsapp", 
+				id: email.messageId, 
+				from: {
+					number: num
+				}, 
+				content: email.text
+
+			}, function(err, message) {
+
+				if(err) {
+					console.log("bot> error pushing message (" + email.messageId + ") to conversation (" + conversation._id + ")");
+					return;
+				}
+
+				else if(!message.exists) {
+
+					// send to all recipients through email
+					console.log("bot> forwarding email to whatsapp...")
+
+					var content = email.from[0].name + " (" + email.from[0].address + "): " + email.text;
+
+
+					// foward email to whatsapp group
+					whatsapp.send(whatsapp_id, content, function(err) {
+
+						if(err)
+							console.log("bot> error fowarding email: " + err.message || err.toString());
+					});
+				}
+
+				else {
+					console.log("bot> message received already exists... nothing to be done")
+				}
+
+			});
 		});
 	}
 
@@ -115,27 +154,28 @@ var BotService = function() {
 		})
 	}
 
-	_public.onGroupMessageReceived = function(message, participants) {
+	_public.onGroupMessageReceived = function(incoming, participants) {
 
-		console.log("bot> group message received from " + message.group_id + " with id= " + message.message_id);
+		console.log("bot> group message received from " + incoming.group_id + " with id= " + incoming.message_id);
 
-		Conversation.getByWhatsAppID(message.group_id, function(err, conversation) {
+		Conversation.getByWhatsAppID(incoming.group_id, function(err, conversation) {
 
 			console.log("bot> group conversation found with id: " + conversation._id)
 
 			conversation.pushMessage({
 
 				provider: "whatsapp", 
-				id: message.message_id, 
+				id: incoming.message_id, 
 				from: {
-					number: author.replace(/\D/g,'')
+					number: incoming.author.replace(/\D/g,'')
 				}, 
-				content: content
+				content: incoming.content
 
 			}, function(err, message) {
 
 				if(err) {
 					console.log("bot> error pushing group essage (" + messageId + ") to conversation (" + conversation._id + ")");
+					console.error(err)
 					return;
 				}
 
@@ -148,7 +188,7 @@ var BotService = function() {
 					User.findByParticipants(participants, function(err, users) {
 
 						if(err) {
-							console.log("bot> error pushing group message (" + messageId + ") to gmail");
+							console.log("bot> error pushing group message (" + incoming.message_id + ") to gmail");
 							return;
 						}
 
