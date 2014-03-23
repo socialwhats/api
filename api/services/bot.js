@@ -38,7 +38,9 @@ var BotService = function() {
 		});
 
 		// Start mail middleware
-		mail.start();
+		mail.start(function(gmail_id, email) {
+			_public.onEmailReceived(gmail_id, email);
+		});
 
 		// Start twitter service
 		twitter.start(_public.onTweetReceived);
@@ -48,10 +50,13 @@ var BotService = function() {
 
 		console.log("bot> email received from " + email.from[0].name + "(" + email.from.address + ")");
 
-		var destination = email.subject.replace(/\D/g,'');
+		var subject = email.subject;
 		var message = email.from[0].name + ": " + email.text;
 
-		return null;
+		whatsapp.send("5519983656062", message, function(err) {
+			if(err)
+				console.log("bot> error fowarding email: " + err.message || err.toString());
+		});
 	}
 
 	_public.onMessageReceived = function(messageId, num, content) {

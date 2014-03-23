@@ -37,7 +37,9 @@ var MailService = function(config) {
 		return _public;
 	}
 
-	_public.start = function(){
+	_public.start = function(listener){
+
+		_this.listener = listener;
 
 		_this.client.on("connect", function(){
 			console.log('mail> connected to server!');
@@ -72,7 +74,7 @@ var MailService = function(config) {
 		var first = false;
 
 		mailparser.on("end", function(mail_object){
-			bot.onEmailReceived(message.xGMThreadId, mail_object);
+			_this.listener(message.xGMThreadId, mail_object);
 		});
 
 		// parse email
