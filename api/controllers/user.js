@@ -835,7 +835,7 @@ module.exports = {
 
 							else {
 
-								return res.redirect('http://www.socialwhats.co/signup.html';
+								return res.redirect('http://www.socialwhats.co/signup.html');
 								// return res.redirect('http://www.google.com');
 							}
 
