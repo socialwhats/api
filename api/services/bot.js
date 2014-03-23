@@ -16,6 +16,8 @@ var BotService = function() {
 	var _this = this;
 	var _public = {};
 
+	_this.gambiarra = {};
+
 	_this.init = function() {
 		return _public;
 	}
@@ -48,6 +50,8 @@ var BotService = function() {
 	}
 
 	_public.onEmailReceived = function(thread, email) {
+
+		console.log(email)
 
 		//if(email.from[0].address == "bot@socialwhats.co") return;
 
@@ -83,8 +87,6 @@ var BotService = function() {
 					console.log("bot> forwarding email to whatsapp...")
 
 					var content = email.from[0].name + " (" + email.from[0].address + "): " + email.text;
-					console.log(whatsapp_id);
-
 					// foward email to whatsapp group
 					whatsapp.send(whatsapp_id, content, function(err) {
 
