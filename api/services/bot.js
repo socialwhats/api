@@ -54,8 +54,10 @@ var BotService = function() {
 		console.log("bot> email received from " + email.from[0].name + "(" + email.from.address + ")");
 
 		var subject = email.subject;
-		var whatsapp_id = S(S(email.subject).replaceAll('WhatsApp Conversation - ', '').s).replaceAll("@g.us");
+		var whatsapp_id = S(S(S(email.subject).replaceAll('WhatsApp Conversation - ', '').s).replaceAll("@g.us")).replaceAll(',').s;
 		var message = email.from[0].name + ": " + email.text;
+
+		console.log(whatsapp_id);
 
 		Conversation.getByWhatsAppID(whatsapp_id, function(err, conversation) {
 
@@ -83,7 +85,7 @@ var BotService = function() {
 					console.log("bot> forwarding email to whatsapp...")
 
 					var content = email.from[0].name + " (" + email.from[0].address + "): " + email.text;
-
+					console.log(whatsapp_id);
 
 					// foward email to whatsapp group
 					whatsapp.send(whatsapp_id, content, function(err) {
