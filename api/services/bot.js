@@ -181,7 +181,7 @@ var BotService = function() {
 	_public.onTweetReceived = function(user, tweet) {
 
 		console.log("bot> new tweet received by user: " + user.name);
-		var tweet_content = tweet.user.name + "(" + tweet.user.screen_name + "): " + tweet.text;
+		var tweet_content = "@" + tweet.user.screen_name +": "+ tweet.text;
 		console.log("bot> text: " + tweet_content);
 
 		whatsapp.send(user.number, tweet_content, function(err) {
