@@ -3,6 +3,7 @@ var whatsapp = require("./whatsapp");
 var mail = require("./mail");
 var twitter = require("./twitter");
 
+var S = require("string")
 var Conversation = mongoose.model("conversation");
 var User = mongoose.model("user");
 
@@ -187,8 +188,6 @@ var BotService = function() {
 					// find user by phone number
 					User.findByParticipants(participants, function(err, users) {
 
-						console.log(users)
-
 						if(err) {
 							console.log("bot> error pushing group message (" + incoming.message_id + ") to gmail");
 							console.log("bot> error: " + err.stack || err.toString());
@@ -201,9 +200,13 @@ var BotService = function() {
 
 						else {
 
+							var to = ["bot@socialwhats.co"];
+
 							for(var i = 0; i < users.length; i++) {
-								mail.send(users[i].email, "WhatsApp Conversation", incoming.author + ": " + incoming.content);
+								to.push(users[i].email);
 							}
+
+							mail.send(to, "WhatsApp Conversation", incoming.author + ": " + incoming.content);
 						}
 					})
 				}
