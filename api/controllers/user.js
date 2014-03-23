@@ -703,8 +703,6 @@ module.exports = {
 
 	twitter_callback: function(req, res) {
 
-		console.log('ENTROU AQUI -----------------------------');
-
 		if(!req.param('oauth_token') || !req.param('oauth_verifier')) {
 
 			res.json({
