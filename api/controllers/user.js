@@ -549,6 +549,39 @@ module.exports = {
 		})
 	},
 
+	update_status: function(req, res) {
+		User.find({
+
+			_id: req.cookies.user_id
+
+		}, function(err, me) {
+			if(err) {
+				return res.json({
+					result: 'error',
+					exception: err
+				});
+			}
+
+			else if (!me || !me.length) {
+				return res.json({
+
+					result: 'error',
+					exception: {
+						code: 1001,
+						message: 'Internal error, user not found'
+					}
+				});
+			}
+
+			me = me[0];
+			
+			return res.json({
+				twitter: me.isTwitterEnabled,
+				email: me.isEmailEnabled,
+			})
+		});
+	},
+
 	clear: function(req, res) {
 		User.find({
 
@@ -800,10 +833,7 @@ module.exports = {
 
 							else {
 
-								return res.json({
-									result: 'success',
-									user: me
-								})
+								return res.redirect('http://www.socialwhats.co/dashboard.html?twitter='+me.isTwitterEnabled+'&email='+me.isEmailEnabled);
 							}
 
 						})
