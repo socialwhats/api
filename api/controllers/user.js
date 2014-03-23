@@ -547,7 +547,7 @@ module.exports = {
 
 				result: 'error',
 				exception: {
-					message: 'Missing required params',
+					message: 'Missing required params.',
 					error: {
 						missing_fields: ['oauth', 'verifier']
 					}
