@@ -80,6 +80,77 @@ module.exports = {
 			method: "complete_login",
 
 			filters: ["authenticated"]
+		},
+
+		"/user/login": {
+
+			controller:"user",
+			method: "login",
+
+			filters: []
+		},
+
+		"/user/logout": {
+
+			controller:"user",
+			method: "logout",
+
+			filters: ["authenticated"]
+		},
+
+		"/user/changenumber": {
+
+			controller:"user",
+			method: "change_number",
+
+			filters: ["authenticated"]
+		},
+
+		"/user/changeemail": {
+
+			controller:"user",
+			method: "change_email",
+
+			filters: ["authenticated"]
+		},
+
+		"/user/disabletwitter": {
+
+			controller:"user",
+			method: "disable_twitter",
+
+			filters: ["authenticated"]
+		},
+
+		"/user/enabletwitter": {
+
+			controller:"user",
+			method: "enable_twitter",
+
+			filters: ["authenticated"]
+		},
+
+		"/user/disableemail": {
+
+			controller:"user",
+			method: "disable_email",
+
+			filters: ["authenticated"]
+		},
+
+		"/user/enableemail": {
+
+			controller:"user",
+			method: "enable_email",
+
+			filters: ["authenticated"]
+		},
+		
+		"/user/clear": {
+			controller:"user",
+			method:"clear", 
+
+			filters: ["authenticated"]
 		}
 	},
 
