@@ -202,12 +202,6 @@ var BotService = function() {
 						else {
 
 							for(var i = 0; i < users.length; i++) {
-
-								// do not redirect to myself
-								if(users[i].number == incoming.author.replace(/\D/g,'')) {
-									continue;
-								}
-
 								mail.send(users[i].email, "WhatsApp Conversation", incoming.author + ": " + incoming.content);
 							}
 						}
