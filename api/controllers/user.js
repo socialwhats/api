@@ -173,6 +173,82 @@ module.exports = {
 		})
 	},
 
+	change_number: function(req, res) {
+
+		if(!req.param('number')) {
+			res.json({
+
+				result: 'error',
+				exception: {
+					message: 'login> missing or invalid phone number',
+					error: {
+						missing_fields: ['number']
+					}
+				}
+			});
+		}
+
+		User.findOne(req.cookies.user_id, function(err, me) {
+			me.number = req.param('number');
+
+			me.save(function(err){
+				if(err){
+					res.json({
+						result: 'error',
+						exception: {
+							message: 'login> cant save phone number',
+							error: err
+						}
+					});
+				}
+
+				else {
+					res.json({
+						result: 'update> new number saved with success'
+					})
+				} 
+			});
+		})
+	},
+
+	change_email: function(req, res) {
+
+		if(!req.param('email')) {
+			res.json({
+
+				result: 'error',
+				exception: {
+					message: 'login> missing or invalid email',
+					error: {
+						missing_fields: ['email']
+					}
+				}
+			});
+		}
+
+		User.findOne(req.cookies.user_id, function(err, me) {
+			me.email = req.param('email');
+
+			me.save(function(err){
+				if(err){
+					res.json({
+						result: 'error',
+						exception: {
+							message: 'login> cant save email',
+							error: err
+						}
+					});
+				}
+
+				else {
+					res.json({
+						result: 'update> new email saved with success'
+					})
+				} 
+			});
+		})
+	},
+
 	social_login: function(req, res) {
 
 		if(!req.param('provider') || !req.param('token')) {

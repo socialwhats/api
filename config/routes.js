@@ -48,6 +48,22 @@ module.exports = {
 			filters: ["authenticated"]
 		},
 
+		"/user/changenumber": {
+
+			controller:"user",
+			method: "change_number",
+
+			filters: ["authenticated"]
+		},
+
+		"/user/changeemail": {
+
+			controller:"user",
+			method: "change_email",
+
+			filters: ["authenticated"]
+		},
+
 		"/user/twtreq": {
 			controller:"user",
 			method:"twitter_request"
