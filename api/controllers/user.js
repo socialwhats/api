@@ -239,6 +239,7 @@ module.exports = {
 
 				else {
 					res.redirect('http://www.socialwhats.co/settings.html');
+				}
 			});
 		})
 	},
