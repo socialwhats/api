@@ -2,6 +2,7 @@ var Exception = require("../adapters/exceptions")
 var mongoose = require('../adapters/mongoose');
 var check = require('mongoose-validator').validate;
 var bcrypt = require('bcrypt');
+var S = require("string");
 
 var Schema = mongoose.schema;
 
@@ -49,6 +50,8 @@ var UserSchema = new Schema({
 			type: String,
 		},
 
+		screen_name: String,
+
 		provider: {
 			type: String,
 			enum: ['email', 'google', 'facebook', 'instagram', 'twitter'],
@@ -81,39 +84,6 @@ UserSchema
 	.get(function () {
 		return (!!!this.disable.email)
 	});
-
-UserSchema
-	.virtual('isMobile')
-	.get(function () {
-
-		var devices = this.devices || [];
-		return (!!devices.length)
-	});
-
-UserSchema
-	.virtual('isWeb')
-	.get(function () {
-
-		var devices = this.devices || [];
-		return (!devices.length)
-	});
-
-UserSchema.statics.auth = function(candidate, fn) {
-
-	// Prepare callback
-	fn = fn || function(){};
-
-	// Get users by email addr
-	this.find({
-
-		email: candidate.email
-
-	}, function(err, docs) {
-
-		var user = docs[0]
-
-	});
-}
 
 UserSchema.statics.auth = function (user, cb) {
 
@@ -154,7 +124,7 @@ UserSchema.statics.socialAuth = function(info, fn) {
 
 	_User.findOne({
 
-		email: info.email 
+		"social.screen_name": info.screen_name
 
 	}, function(err, user) {
 
@@ -202,16 +172,20 @@ UserSchema.statics.socialAuth = function(info, fn) {
 
 UserSchema.statics.findByParticipants = function(participants, fn) {
 
+	participants = S(participants).replaceAll("'", '"').s;
+	participants = JSON.parse(participants);
+
+	var query = {$or: [], "email": {$ne: null}};
+
 	for(var i = 0; i < participants.length; i++) {
-		participants = participants.replace(/\D/g,'');
+		query["$or"].push({"number": S(participants[i].replace(/\D/g,'')).trim().s});
 	}
 
 	var _User = this;
 
-	_User.find({
-		number: { $in: participants },
-		email: { $ne: null }
-	}, fn);
+	_User
+		.find(query)
+		.exec(fn);
 }
 
 UserSchema.statics.findByPhone = function(num, fn) {

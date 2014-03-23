@@ -34,6 +34,7 @@ var twitterProvider = new Provider('twitter', {
 						provider: "twitter",
 						token: token,
 						secret: secret,
+						screen_name: data.screen_name
 					}
 				});
 			}

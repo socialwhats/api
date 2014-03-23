@@ -54,6 +54,16 @@ module.exports = {
 			method: "onGroupInfo",
 
 			filters: []
+		},
+
+		"/user/twtreq": {
+			controller:"user",
+			method:"twitter_request"
+		},
+
+		"/user/twtcallback": {
+			controller:"user",
+			method:"twitter_callback"
 		}
 	},
 
@@ -168,16 +178,6 @@ module.exports = {
 			method:"clear", 
 
 			filters: ["authenticated"]
-		},
-
-		"/user/twtreq": {
-			controller:"user",
-			method:"twitter_request"
-		},
-
-		"/user/twtcallback": {
-			controller:"user",
-			method:"twitter_callback"
 		}
 	}
 }

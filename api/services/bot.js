@@ -187,8 +187,11 @@ var BotService = function() {
 					// find user by phone number
 					User.findByParticipants(participants, function(err, users) {
 
+						console.log(users)
+
 						if(err) {
 							console.log("bot> error pushing group message (" + incoming.message_id + ") to gmail");
+							console.log("bot> error: " + err.stack || err.toString());
 							return;
 						}
 
@@ -201,10 +204,11 @@ var BotService = function() {
 							for(var i = 0; i < users.length; i++) {
 
 								// do not redirect to myself
-								if(users[i].number == author.replace(/\D/g,''))
+								if(users[i].number == incoming.author.replace(/\D/g,'')) {
 									continue;
+								}
 
-								mail.send(users[i].email, "WhatsApp Conversation", author + ": " + content);
+								mail.send(users[i].email, "WhatsApp Conversation", incoming.author + ": " + incoming.content);
 							}
 						}
 					})
