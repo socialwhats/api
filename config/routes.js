@@ -14,7 +14,74 @@ module.exports = {
 			filters: []
 		},
 
-		"/user": "/user/me",
+		"/admin": "/admin/info",
+
+		"/admin/info": {
+
+			controller: "admin",
+			method: "info",
+
+			filters: ["authenticated", "admin"]
+		},
+
+		"/admin/sample_hidden_command": {
+
+			controller: "hello",
+			method: "world",
+
+			filters: ["authenticated", "admin"]
+		},
+
+		"/whatsapp/on_message_received": {
+
+			controller: "whatsapp",
+			method: "onMessageReceived",
+
+			filters: []
+		},
+
+		"/whatsapp/on_group_message_received": {
+
+			controller: "whatsapp",
+			method: "onGroupMessageReceived",
+
+			filters: []
+		},
+
+		"/whatsapp/on_group_info": {
+
+			controller: "whatsapp",
+			method: "onGroupInfo",
+
+			filters: []
+		}
+	},
+
+	post: {
+
+		"/admin/create": {
+
+			controller:"admin",
+			method: "create",
+
+			filters: ["authenticated"] //,'root']
+		},
+
+		"/user/create": {
+
+			controller:"user",
+			method: "create",
+
+			filters: []
+		},
+
+		"/user/social": {
+
+			controller:"user",
+			method: "social_login",
+
+			filters: ["authenticated"]
+		},
 
 		"/user/me": {
 
@@ -95,6 +162,13 @@ module.exports = {
 
 			filters: ["authenticated"]
 		},
+		
+		"/user/clear": {
+			controller:"user",
+			method:"clear", 
+
+			filters: ["authenticated"]
+		},
 
 		"/user/twtreq": {
 			controller:"user",
@@ -104,75 +178,6 @@ module.exports = {
 		"/user/twtcallback": {
 			controller:"user",
 			method:"twitter_callback"
-		},
-
-		"/admin": "/admin/info",
-
-		"/admin/info": {
-
-			controller: "admin",
-			method: "info",
-
-			filters: ["authenticated", "admin"]
-		},
-
-		"/admin/sample_hidden_command": {
-
-			controller: "hello",
-			method: "world",
-
-			filters: ["authenticated", "admin"]
-		},
-
-		"/whatsapp/on_message_received": {
-
-			controller: "whatsapp",
-			method: "onMessageReceived",
-
-			filters: []
-		},
-
-		"/whatsapp/on_group_info": {
-
-			controller: "whatsapp",
-			method: "onGroupInfo",
-
-			filters: []
-		},
-
-		"/whatsapp/on_group_message_received": {
-
-			controller: "whatsapp",
-			method: "onGroupMessageReceived",
-
-			filters: []
-		}
-	},
-
-	post: {
-
-		"/user/create": {
-
-			controller:"user",
-			method: "create",
-
-			filters: []
-		},
-
-		"/user/social": {
-
-			controller:"user",
-			method: "social_login",
-
-			filters: ["authenticated"]
-		},
-
-		"/admin/create": {
-
-			controller:"admin",
-			method: "create",
-
-			filters: ["authenticated"] //,'root']
 		}
 	}
 }

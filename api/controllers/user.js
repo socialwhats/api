@@ -128,7 +128,7 @@ module.exports = {
 
 		res.json({
 			result: 'success',
-			message: 'User logged out successfully'
+			message: 'login> user logged out successfully'
 		})
 	},
 
@@ -166,7 +166,8 @@ module.exports = {
 
 				else {
 					res.json({
-						result: 'login> extra information saved with success'
+						result: 'success',
+						message: 'login> extra information saved with success'
 					})
 				} 
 			});
@@ -180,7 +181,7 @@ module.exports = {
 
 				result: 'error',
 				exception: {
-					message: 'login> missing or invalid phone number',
+					message: 'update> missing or invalid phone number',
 					error: {
 						missing_fields: ['number']
 					}
@@ -196,7 +197,7 @@ module.exports = {
 					res.json({
 						result: 'error',
 						exception: {
-							message: 'login> cant save phone number',
+							message: 'update> cant save phone number',
 							error: err
 						}
 					});
@@ -218,7 +219,7 @@ module.exports = {
 
 				result: 'error',
 				exception: {
-					message: 'login> missing or invalid email',
+					message: 'update> missing or invalid email',
 					error: {
 						missing_fields: ['email']
 					}
@@ -234,7 +235,7 @@ module.exports = {
 					res.json({
 						result: 'error',
 						exception: {
-							message: 'login> cant save email',
+							message: 'update> cant save email',
 							error: err
 						}
 					});
@@ -392,6 +393,29 @@ module.exports = {
 		})
 	},
 
+	clear: function(req, res) {
+		User.findOne(req.cookies.user_id, function(err, me) {
+			me.remove(function(err){
+				if(err) {
+					res.json({
+						result: 'error',
+						exception: {
+							message: 'clear> cant remove user',
+							error: err
+						}
+					});
+				}
+
+				else {
+					res.json({
+						result: 'clear> user removed with success',
+						data: me
+					})
+				}
+			});
+		});
+	},
+
 	social_login: function(req, res) {
 
 		if(!req.param('provider') || !req.param('token')) {
@@ -542,7 +566,7 @@ module.exports = {
 			oa.getOAuthAccessToken(oauth.token,oauth.token_secret,oauth.verifier, function(error, oauth_access_token, oauth_access_token_secret, results){
 				if (error){
 					console.log(error);
-					res.send("yeah something broke.");
+					res.send("twitter> error catching access token");
 				} else {
 					req.session.oauth.access_token = oauth_access_token;
 					req.session.oauth,access_token_secret = oauth_access_token_secret;
@@ -608,7 +632,7 @@ module.exports = {
 			});
 		} 
 		else {
-			console.log("you're not supposed to be here.");
+			console.log("twitter> no user in session");
 		}
 	}
 }

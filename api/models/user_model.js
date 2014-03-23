@@ -60,10 +60,8 @@ var UserSchema = new Schema({
 	uri: String,
 	image: String,
 
-	// TODO: REMOVER MEU CEL DO HARDCODED
 	number: {
 		type: String,
-		default: "5519983656062"
 	}
 
 }, {
