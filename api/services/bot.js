@@ -49,8 +49,6 @@ var BotService = function() {
 
 	_public.onEmailReceived = function(thread, email) {
 
-		console.log(email);
-
 		if(email.from[0].address == "bot@socialwhats.co") return;
 
 		console.log("bot> email received from " + email.from[0].name + "(" + email.from.address + ")");
@@ -162,6 +160,7 @@ var BotService = function() {
 	_public.onGroupMessageReceived = function(incoming, participants) {
 
 		console.log("bot> group message received from " + incoming.group_id + " with id= " + incoming.message_id);
+		console.log(incoming);
 
 		Conversation.getByWhatsAppID(incoming.group_id, function(err, conversation) {
 
@@ -179,7 +178,7 @@ var BotService = function() {
 			}, function(err, message) {
 
 				if(err) {
-					console.log("bot> error pushing group essage (" + incoming.message_id + ") to conversation (" + conversation._id + ")");
+					console.log("bot> error pushing group message (" + incoming.message_id + ") to conversation (" + conversation._id + ")");
 					console.error(err)
 					return;
 				}

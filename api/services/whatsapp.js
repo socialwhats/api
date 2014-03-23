@@ -10,8 +10,6 @@ var Conversation = mongoose.model("conversation");
 
 var ROOT_PY = 'http://localhost:8080/?'
 
-var groupMessageQueue = {};
-
 var WhatsAppService = function() {
 
 	if ( arguments.callee._singletonInstance )
@@ -20,6 +18,8 @@ var WhatsAppService = function() {
 
 	var _this = this;
 	var _public = {};
+
+	_this.groupMessageQueue = {};
 
 	_this.init = function(){
 
@@ -44,7 +44,7 @@ var WhatsAppService = function() {
 
 	_public.onGroupMessageReceived = function(group_id, message_id, content, author) {
 
-		console.log("whatsapp> on message group received");
+		console.log("whatsapp> on message group received " + group_id);
 
 		var incomingMessage = {
 			group_id: group_id,
@@ -53,7 +53,7 @@ var WhatsAppService = function() {
 			author: author
 		}
 
-		groupMessageQueue[incomingMessage.group_id] = incomingMessage;
+		_this.groupMessageQueue[incomingMessage.group_id] = incomingMessage;
 		_public.requestGroupInfo(incomingMessage.group_id);
 	}
 
@@ -74,7 +74,7 @@ var WhatsAppService = function() {
 	}
 
 	_public.onGetGroupInfo = function(group_id, participants) {
-		var incomingMessage = groupMessageQueue[group_id];
+		var incomingMessage = _this.groupMessageQueue[group_id];
 		_this.listener.group(incomingMessage, participants);
 	}
 
