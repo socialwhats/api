@@ -3,7 +3,7 @@ var whatsapp = require("./whatsapp");
 var mail = require("./mail");
 var twitter = require("./twitter");
 
-var S = require("string")
+var S = require("string");
 var Conversation = mongoose.model("conversation");
 var User = mongoose.model("user");
 
@@ -64,7 +64,7 @@ var BotService = function() {
 				provider: "whatsapp", 
 				id: email.messageId, 
 				from: {
-					number: num
+					number: null
 				}, 
 				content: email.text
 
