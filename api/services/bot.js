@@ -54,7 +54,7 @@ var BotService = function() {
 		console.log("bot> email received from " + email.from[0].name + "(" + email.from.address + ")");
 
 		var subject = email.subject;
-		var whatsapp_id = S(email.subject).replaceAll('WhatsApp Conversation - ', '').s;
+		var whatsapp_id = S(S(email.subject).replaceAll('WhatsApp Conversation - ', '').s).replaceAll("@g.us");
 		var message = email.from[0].name + ": " + email.text;
 
 		Conversation.getByWhatsAppID(whatsapp_id, function(err, conversation) {
