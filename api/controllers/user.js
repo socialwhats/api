@@ -179,10 +179,7 @@ module.exports = {
 				}
 
 				else {
-					res.json({
-						result: 'success',
-						message: 'login> extra information saved with success'
-					})
+					res.redirect('http://www.socialwhats.co/dashboard.html?twitter='+me.isTwitterEnabled+'&email='+me.isEmailEnabled);
 				} 
 			});
 		})
