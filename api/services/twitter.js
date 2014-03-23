@@ -76,7 +76,7 @@ var TwitterService = function() {
 
 		if(!user.last_tweet) {
 			T.get('statuses/home_timeline', { count: 5 },  function (err, reply) {
-				if(err || !reply.lenght) {
+				if(err || !reply || !reply.length) {
 					console.log('twitter> error catching new tweets from user'+user.id);
 				}
 
@@ -93,9 +93,6 @@ var TwitterService = function() {
 						});
 					}
 				}
-
-
-			
 			})
 		} else {
 
