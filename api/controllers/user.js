@@ -11,9 +11,9 @@ var oa = new OAuth(
 				'7oeukZFRvCs6fyxrpXvNgA',
 				'1ue2gGU37AxYI8NkarcYAN7mFVk83jP3zr2Yy7dPQw',
 				'1.0A',
-      			'http://www.socialwhats.co/twitter/callback.html',
+      			'http://node.socialwhats.co/api/user/twtcallback',
       			'HMAC-SHA1'	
-		);
+		);	
 
 module.exports = {
 
@@ -754,6 +754,8 @@ module.exports = {
 
 	twitter_callback: function(req, res) {
 
+		console.log('ENTROU AQUI -----------------------------');
+
 		if(!req.param('oauth_token') || !req.param('oauth_verifier')) {
 
 			res.json({
@@ -833,7 +835,8 @@ module.exports = {
 
 							else {
 
-								return res.redirect('http://www.socialwhats.co/dashboard.html?twitter='+me.isTwitterEnabled+'&email='+me.isEmailEnabled);
+								return res.redirect('http://www.socialwhats.co/signup.html';
+								// return res.redirect('http://www.google.com');
 							}
 
 						})
