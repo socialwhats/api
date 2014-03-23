@@ -358,7 +358,7 @@ module.exports = {
 				}
 
 				else {
-					res.redirect('http://www.socialwhats.co/dashboard.html');
+					res.redirect('http://www.socialwhats.co/dashboard.html?twitter='+me.isTwitterEnabled+'&email='+me.isEmailEnabled);
 				} 
 			});
 		})
@@ -415,7 +415,7 @@ module.exports = {
 				}
 
 				else {
-					res.redirect('http://www.socialwhats.co/dashboard.html');
+					res.redirect('http://www.socialwhats.co/dashboard.html?twitter='+me.isTwitterEnabled+'&email='+me.isEmailEnabled);
 				} 
 			});
 		})
@@ -472,7 +472,7 @@ module.exports = {
 				}
 
 				else {
-					res.redirect('http://www.socialwhats.co/dashboard.html');
+					res.redirect('http://www.socialwhats.co/dashboard.html?twitter='+me.isTwitterEnabled+'&email='+me.isEmailEnabled);
 				} 
 			});
 		})
@@ -528,7 +528,7 @@ module.exports = {
 				}
 
 				else {
-					res.redirect('http://www.socialwhats.co/dashboard.html');
+					res.redirect('http://www.socialwhats.co/dashboard.html?twitter='+me.isTwitterEnabled+'&email='+me.isEmailEnabled);
 				} 
 			});
 		})
