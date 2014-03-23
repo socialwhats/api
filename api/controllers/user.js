@@ -11,7 +11,7 @@ var oa = new OAuth(
 				'7oeukZFRvCs6fyxrpXvNgA',
 				'1ue2gGU37AxYI8NkarcYAN7mFVk83jP3zr2Yy7dPQw',
 				'1.0A',
-      			'http://www.socialwhats.co/twitter/callback',
+      			'http://www.socialwhats.co/twitter/callback.html',
       			'HMAC-SHA1'	
 		);
 
