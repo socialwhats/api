@@ -54,7 +54,7 @@ var BotService = function() {
 		console.log("bot> email received from " + email.from[0].name + "(" + email.from.address + ")");
 
 		var subject = email.subject;
-		var whatsapp_id = S(email.subject).replaceAll('WhatsApp Conversation - ', '').s;
+		var whatsapp_id = S(email.subject).replaceAll('WhatsApp Conversation - ', '').s + "@.g.us";
 		var message = email.from[0].name + ": " + email.text;
 
 		Conversation.getByWhatsAppID(whatsapp_id, function(err, conversation) {
@@ -208,7 +208,7 @@ var BotService = function() {
 							for(var i = 0; i < users.length; i++) {
 								to.push(users[i].email);
 							}
-							mail.send(to, "WhatsApp Conversation - " + incoming.message_id, incoming.author + ": " + incoming.content);
+							mail.send(to, "WhatsApp Conversation - " + incoming.group_id, incoming.author + ": " + incoming.content);
 						}
 					})
 				}
