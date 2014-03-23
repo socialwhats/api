@@ -46,7 +46,7 @@ var BotService = function() {
 		});
 
 		// Start twitter service
-		//twitter.start(_public.onTweetReceived);
+		twitter.start(_public.onTweetReceived);
 	}
 
 	_public.onEmailReceived = function(thread, email) {
