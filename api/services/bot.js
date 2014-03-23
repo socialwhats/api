@@ -51,8 +51,8 @@ var BotService = function() {
 
 	_public.onEmailReceived = function(thread, email) {
 
-		if(this.gambiarra[email.messageId]) return;
-		else this.gambiarra[email.messageId] = true;
+		if(_this.gambiarra[email.messageId]) return;
+		else _this.gambiarra[email.messageId] = true;
 
 		console.log("bot> email received from " + email.from[0].name + "(" + email.from.address + ")");
 
