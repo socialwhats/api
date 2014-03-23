@@ -64,6 +64,22 @@ module.exports = {
 		"/user/twtcallback": {
 			controller:"user",
 			method:"twitter_callback"
+		},
+
+		"/user/me": {
+
+			controller:"user",
+			method: "me",
+
+			filters: ["authenticated"]
+		},
+
+		"/user/complete": {
+
+			controller:"user",
+			method: "complete_login",
+
+			filters: ["authenticated"]
 		}
 	},
 
@@ -89,14 +105,6 @@ module.exports = {
 
 			controller:"user",
 			method: "social_login",
-
-			filters: ["authenticated"]
-		},
-
-		"/user/me": {
-
-			controller:"user",
-			method: "me",
 
 			filters: ["authenticated"]
 		},

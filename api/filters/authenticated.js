@@ -1,6 +1,6 @@
 module.exports = function(req, res, ok) {
 	
-	if(req.cookies.user_id && req.cookies.user_id != "null") {
+	if(req.cookies.user_id) {
 		ok();
 	}
 

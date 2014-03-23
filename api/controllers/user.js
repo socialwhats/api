@@ -19,7 +19,11 @@ module.exports = {
 
 	me: function(req, res) {
 
-		User.findOne(req.cookies.user_id, function(err, me) {
+		User.find({
+
+			_id: req.cookies.user_id
+
+		}, function(err, me) {
 
 			if(err) {
 
@@ -29,7 +33,7 @@ module.exports = {
 				});
 			}
 
-			else if(!me) {
+			else if(!me || !me.length) {
 
 				res.cookie('logged_in', 'false');
 				res.cookie('user_id', 'true');
@@ -43,6 +47,8 @@ module.exports = {
 					}
 				});
 			}
+
+			me = me[0];
 
 			return res.json({
 				result: 'success',
@@ -147,13 +153,21 @@ module.exports = {
 			});
 		}
 
-		User.findOne(req.cookies.user_id, function(err, me) {
+		User.find({
+
+			_id: req.cookies.user_id
+
+		}, function(err, me) {
+
+			me = me[0]
 			me.number = req.param('number');
+
 			if(req.param('email')) {
 				me.email = req.param('email');
 			}
 
 			me.save(function(err){
+
 				if(err){
 					res.json({
 						result: 'error',
@@ -608,6 +622,8 @@ module.exports = {
 
 						User.socialAuth(socialInfo, function(err, me) {
 
+							res.cookie("user_id", me._id);
+
 							if(err) {
 
 								return res.json({
@@ -617,8 +633,6 @@ module.exports = {
 							}
 
 							else {
-
-								res.cookie("user_id", me._id);
 
 								return res.json({
 									result: 'success',
