@@ -40,6 +40,14 @@ module.exports = {
 			filters: ["authenticated"]
 		},
 
+		"/user/complete": {
+
+			controller:"user",
+			method: "complete_login",
+
+			filters: ["authenticated"]
+		},
+
 		"/user/twtreq": {
 			controller:"user",
 			method:"twitter_request"

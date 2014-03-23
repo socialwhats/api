@@ -132,6 +132,47 @@ module.exports = {
 		})
 	},
 
+	complete_login: function(req, res) {
+
+		if(!req.param('number')) {
+			res.json({
+
+				result: 'error',
+				exception: {
+					message: 'login> missing or invalid phone number',
+					error: {
+						missing_fields: ['number']
+					}
+				}
+			});
+		}
+
+		User.findOne(req.cookies.user_id, function(err, me) {
+			me.number = req.param('number');
+			if(req.param('email')) {
+				me.email = req.param('email');
+			}
+
+			me.save(function(err){
+				if(err){
+					res.json({
+						result: 'error',
+						exception: {
+							message: 'login> cant save phone number or email',
+							error: err
+						}
+					});
+				}
+
+				else {
+					res.json({
+						result: 'login> extra information saved with success'
+					})
+				} 
+			});
+		})
+	},
+
 	social_login: function(req, res) {
 
 		if(!req.param('provider') || !req.param('token')) {
@@ -334,6 +375,8 @@ module.exports = {
 
 							else {
 
+								res.cookie("user_id", me._id);
+
 								return res.json({
 									result: 'success',
 									user: me
@@ -342,10 +385,6 @@ module.exports = {
 
 						})
 					});
-
-					// END SOCIAL LOGIN
-
-					res.send("worked. nice one.");
 				}
 			});
 		} 
