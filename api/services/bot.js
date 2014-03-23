@@ -179,7 +179,7 @@ var BotService = function() {
 			}, function(err, message) {
 
 				if(err) {
-					console.log("bot> error pushing group essage (" + messageId + ") to conversation (" + conversation._id + ")");
+					console.log("bot> error pushing group essage (" + incoming.message_id + ") to conversation (" + conversation._id + ")");
 					console.error(err)
 					return;
 				}
@@ -209,10 +209,7 @@ var BotService = function() {
 							for(var i = 0; i < users.length; i++) {
 								to.push(users[i].email);
 							}
-
-							console.log(to)
-
-							mail.send(to, "WhatsApp Conversation", incoming.author + ": " + incoming.content);
+							mail.send(to, "WhatsApp Conversation - " + incoming.message_id, incoming.author + ": " + incoming.content);
 						}
 					})
 				}
