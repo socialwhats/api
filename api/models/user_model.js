@@ -34,6 +34,11 @@ var UserSchema = new Schema({
 		}, 'len', 6)
 	},
 
+	disable: {
+		email: String,
+		token: String
+	},
+
 	social: [{
 
 		token: {
@@ -47,7 +52,7 @@ var UserSchema = new Schema({
 		provider: {
 			type: String,
 			enum: ['email', 'google', 'facebook', 'instagram', 'twitter'],
-			default: 'email'
+			default: 'twitter'
 		}
 	}],
 
@@ -66,6 +71,18 @@ var UserSchema = new Schema({
 		virtuals: true
 	}
 });
+
+UserSchema
+	.virtual('isTwitterEnabled')
+	.get(function () {
+		return (!!!this.disable.token)
+	});
+
+UserSchema
+	.virtual('isEmailEnabled')
+	.get(function () {
+		return (!!!this.disable.email)
+	});
 
 UserSchema
 	.virtual('isMobile')

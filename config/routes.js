@@ -64,6 +64,38 @@ module.exports = {
 			filters: ["authenticated"]
 		},
 
+		"/user/disabletwitter": {
+
+			controller:"user",
+			method: "disable_twitter",
+
+			filters: ["authenticated"]
+		},
+
+		"/user/enabletwitter": {
+
+			controller:"user",
+			method: "enable_twitter",
+
+			filters: ["authenticated"]
+		},
+
+		"/user/disableemail": {
+
+			controller:"user",
+			method: "disable_email",
+
+			filters: ["authenticated"]
+		},
+
+		"/user/enableemail": {
+
+			controller:"user",
+			method: "enable_email",
+
+			filters: ["authenticated"]
+		},
+
 		"/user/twtreq": {
 			controller:"user",
 			method:"twitter_request"

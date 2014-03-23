@@ -249,6 +249,149 @@ module.exports = {
 		})
 	},
 
+	disable_twitter: function(req, res) {
+		User.findOne(req.cookies.user_id, function(err, me) {
+			if(!me.social[0].token) {
+				return res.json({
+					result: 'error',
+					exception: {
+						message: 'disnable> cant disable cause its disabled!',
+						error: err
+					}
+				});
+			}
+
+			me.disable.token = me.social[0].token;
+			me.social[0].token = null;
+
+			me.save(function(err){
+				if(err){
+					res.json({
+						result: 'error',
+						exception: {
+							message: 'disable> cant disabled twitter',
+							error: err
+						}
+					});
+				}
+
+				else {
+					res.json({
+						result: 'disable> twitter disabled with success',
+						data: me
+					})
+				} 
+			});
+		})
+	},
+
+	enable_twitter: function(req, res) {
+		User.findOne(req.cookies.user_id, function(err, me) {
+			if(!me.disable.token) {
+				return res.json({
+					result: 'error',
+					exception: {
+						message: 'enable> cant enable cause its enabled!',
+						error: err
+					}
+				});
+			}
+
+			me.social[0].token = me.disable.token;
+			me.disable.token = null;
+
+			me.save(function(err){
+				if(err){
+					res.json({
+						result: 'error',
+						exception: {
+							message: 'enable> cant enabled twitter',
+							error: err
+						}
+					});
+				}
+
+				else {
+					res.json({
+						result: 'enable> twitter enabled with success',
+						data: me
+					})
+				} 
+			});
+		})
+	},
+
+	disable_email: function(req, res) {
+		User.findOne(req.cookies.user_id, function(err, me) {
+			if(!me.email) {
+				return res.json({
+					result: 'error',
+					exception: {
+						message: 'disnable> cant disable cause its disabled!',
+						error: err
+					}
+				});
+			}
+
+			me.disable.email = me.email;
+			me.email = null;
+
+			me.save(function(err){
+				if(err){
+					res.json({
+						result: 'error',
+						exception: {
+							message: 'disable> cant disabled email',
+							error: err
+						}
+					});
+				}
+
+				else {
+					res.json({
+						result: 'disable> email disabled with success',
+						data: me
+					})
+				} 
+			});
+		})
+	},
+
+	enable_email: function(req, res) {
+		User.findOne(req.cookies.user_id, function(err, me) {
+			if(!me.disable.email) {
+				return res.json({
+					result: 'error',
+					exception: {
+						message: 'enable> cant enable cause its enabled!',
+						error: err
+					}
+				});
+			}
+			me.email = me.disable.email;
+			me.disable.email = null;
+
+			me.save(function(err){
+				if(err){
+					res.json({
+						result: 'error',
+						exception: {
+							message: 'enable> cant enabled email',
+							error: err
+						}
+					});
+				}
+
+				else {
+					res.json({
+						result: 'enable> email enabled with success',
+						data: me
+					})
+				} 
+			});
+		})
+	},
+
 	social_login: function(req, res) {
 
 		if(!req.param('provider') || !req.param('token')) {

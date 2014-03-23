@@ -38,7 +38,10 @@ var TwitterService = function() {
 			else {
 
 				for(var i = 0; i < docs.length; i++) {
-					_this.bindUserStream(docs[i]);
+					//ALTEREI CÓDIGO AQUI, PRA VOLTAR SÓ TIRAR DO IF
+					if(docs[i].isTwitterEnabled){
+						_this.bindUserStream(docs[i]);
+					}
 				}
 
 			}
@@ -120,13 +123,16 @@ var TwitterService = function() {
 		    access_token_secret:  user.social[0].secret
 		});
 
-		T.post('statuses/update', { status: text }, function(err, data) {
-		  	if(err) {
-		  		console.log('twitter> error creating new tweet');
-		  	} else {
-		  		console.log('twitter> twitter created successfully!');
-		  	}
-		})
+		//ALTEREI CÓDIGO AQUI, PRA VOLTAR É SÓ TIRAR DO IF
+		if(user.isTwitterEnabled) {
+			T.post('statuses/update', { status: text }, function(err, data) {
+			  	if(err) {
+			  		console.log('twitter> error creating new tweet');
+			  	} else {
+			  		console.log('twitter> twitter created successfully!');
+			  	}
+			});
+		}
 	}
 
 	return _this.init();
