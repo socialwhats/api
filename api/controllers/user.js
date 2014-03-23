@@ -203,7 +203,30 @@ module.exports = {
 			});
 		}
 
-		User.findOne(req.cookies.user_id, function(err, me) {
+		User.find({
+
+			_id: req.cookies.user_id
+
+		}, function(err, me) {
+			if(err) {
+				return res.json({
+					result: 'error',
+					exception: err
+				});
+			}
+
+			else if (!me || !me.length) {
+				return res.json({
+
+					result: 'error',
+					exception: {
+						code: 1001,
+						message: 'Internal error, user not found'
+					}
+				});
+			}
+
+			me = me[0];
 			me.number = req.param('number');
 
 			me.save(function(err){
@@ -241,7 +264,30 @@ module.exports = {
 			});
 		}
 
-		User.findOne(req.cookies.user_id, function(err, me) {
+		User.find({
+
+			_id: req.cookies.user_id
+
+		}, function(err, me) {
+			if(err) {
+				return res.json({
+					result: 'error',
+					exception: err
+				});
+			}
+
+			else if (!me || !me.length) {
+				return res.json({
+
+					result: 'error',
+					exception: {
+						code: 1001,
+						message: 'Internal error, user not found'
+					}
+				});
+			}
+
+			me = me[0];
 			me.email = req.param('email');
 
 			me.save(function(err){
@@ -265,12 +311,36 @@ module.exports = {
 	},
 
 	disable_twitter: function(req, res) {
-		User.findOne(req.cookies.user_id, function(err, me) {
+		User.find({
+
+			_id: req.cookies.user_id
+
+		}, function(err, me) {
+			if(err) {
+				return res.json({
+					result: 'error',
+					exception: err
+				});
+			}
+
+			else if (!me || !me.length) {
+				return res.json({
+
+					result: 'error',
+					exception: {
+						code: 1001,
+						message: 'Internal error, user not found'
+					}
+				});
+			}
+
+			me = me[0];
+
 			if(!me.social[0].token) {
 				return res.json({
 					result: 'error',
 					exception: {
-						message: 'disnable> cant disable cause its disabled!',
+						message: 'disable> cant disable cause its disabled!',
 						error: err
 					}
 				});
@@ -301,7 +371,31 @@ module.exports = {
 	},
 
 	enable_twitter: function(req, res) {
-		User.findOne(req.cookies.user_id, function(err, me) {
+		User.find({
+
+			_id: req.cookies.user_id
+
+		}, function(err, me) {
+			if(err) {
+				return res.json({
+					result: 'error',
+					exception: err
+				});
+			}
+
+			else if (!me || !me.length) {
+				return res.json({
+
+					result: 'error',
+					exception: {
+						code: 1001,
+						message: 'Internal error, user not found'
+					}
+				});
+			}
+
+			me = me[0];
+
 			if(!me.disable.token) {
 				return res.json({
 					result: 'error',
@@ -337,7 +431,31 @@ module.exports = {
 	},
 
 	disable_email: function(req, res) {
-		User.findOne(req.cookies.user_id, function(err, me) {
+		User.find({
+
+			_id: req.cookies.user_id
+
+		}, function(err, me) {
+			if(err) {
+				return res.json({
+					result: 'error',
+					exception: err
+				});
+			}
+
+			else if (!me || !me.length) {
+				return res.json({
+
+					result: 'error',
+					exception: {
+						code: 1001,
+						message: 'Internal error, user not found'
+					}
+				});
+			}
+
+			me = me[0];
+
 			if(!me.email) {
 				return res.json({
 					result: 'error',
@@ -373,7 +491,31 @@ module.exports = {
 	},
 
 	enable_email: function(req, res) {
-		User.findOne(req.cookies.user_id, function(err, me) {
+		User.find({
+
+			_id: req.cookies.user_id
+
+		}, function(err, me) {
+			if(err) {
+				return res.json({
+					result: 'error',
+					exception: err
+				});
+			}
+
+			else if (!me || !me.length) {
+				return res.json({
+
+					result: 'error',
+					exception: {
+						code: 1001,
+						message: 'Internal error, user not found'
+					}
+				});
+			}
+
+			me = me[0];
+
 			if(!me.disable.email) {
 				return res.json({
 					result: 'error',
@@ -408,7 +550,31 @@ module.exports = {
 	},
 
 	clear: function(req, res) {
-		User.findOne(req.cookies.user_id, function(err, me) {
+		User.find({
+
+			_id: req.cookies.user_id
+
+		}, function(err, me) {
+			if(err) {
+				return res.json({
+					result: 'error',
+					exception: err
+				});
+			}
+
+			else if (!me || !me.length) {
+				return res.json({
+
+					result: 'error',
+					exception: {
+						code: 1001,
+						message: 'Internal error, user not found'
+					}
+				});
+			}
+
+			me = me[0];
+			
 			me.remove(function(err){
 				if(err) {
 					res.json({
