@@ -74,6 +74,7 @@ var MailService = function(config) {
 		var first = false;
 
 		mailparser.on("end", function(mail_object){
+			console.log("mail> message parsed and passed to bot");
 			_this.listener(message.xGMThreadId, mail_object);
 		});
 
