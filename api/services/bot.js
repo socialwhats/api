@@ -49,7 +49,7 @@ var BotService = function() {
 
 	_public.onEmailReceived = function(thread, email) {
 
-		if(email.from[0].address == "bot@socialwhats.co") return;
+		//if(email.from[0].address == "bot@socialwhats.co") return;
 
 		console.log("bot> email received from " + email.from[0].name + "(" + email.from.address + ")");
 
