@@ -51,9 +51,8 @@ var BotService = function() {
 
 	_public.onEmailReceived = function(thread, email) {
 
-		console.log(email)
-
-		//if(email.from[0].address == "bot@socialwhats.co") return;
+		if(this.gambiarra[email.messageId]) return;
+		else this.gambiarra[email.messageId] = true;
 
 		console.log("bot> email received from " + email.from[0].name + "(" + email.from.address + ")");
 
