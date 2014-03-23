@@ -358,10 +358,7 @@ module.exports = {
 				}
 
 				else {
-					res.json({
-						result: 'disable> twitter disabled with success',
-						data: me
-					})
+					res.redirect('http://www.socialwhats.co/dashboard.html');
 				} 
 			});
 		})
@@ -418,10 +415,7 @@ module.exports = {
 				}
 
 				else {
-					res.json({
-						result: 'enable> twitter enabled with success',
-						data: me
-					})
+					res.redirect('http://www.socialwhats.co/dashboard.html');
 				} 
 			});
 		})
@@ -478,10 +472,7 @@ module.exports = {
 				}
 
 				else {
-					res.json({
-						result: 'disable> email disabled with success',
-						data: me
-					})
+					res.redirect('http://www.socialwhats.co/dashboard.html');
 				} 
 			});
 		})
@@ -537,46 +528,10 @@ module.exports = {
 				}
 
 				else {
-					res.json({
-						result: 'enable> email enabled with success',
-						data: me
-					})
+					res.redirect('http://www.socialwhats.co/dashboard.html');
 				} 
 			});
 		})
-	},
-
-	update_status: function(req, res) {
-		User.find({
-
-			_id: req.cookies.user_id
-
-		}, function(err, me) {
-			if(err) {
-				return res.json({
-					result: 'error',
-					exception: err
-				});
-			}
-
-			else if (!me || !me.length) {
-				return res.json({
-
-					result: 'error',
-					exception: {
-						code: 1001,
-						message: 'Internal error, user not found'
-					}
-				});
-			}
-
-			me = me[0];
-			
-			return res.json({
-				twitter: me.isTwitterEnabled,
-				email: me.isEmailEnabled,
-			})
-		});
 	},
 
 	clear: function(req, res) {
@@ -617,10 +572,7 @@ module.exports = {
 				}
 
 				else {
-					res.json({
-						result: 'clear> user removed with success',
-						data: me
-					})
+					res.redirect('http://www.socialwhats.co');
 				}
 			});
 		});
