@@ -7,6 +7,8 @@ var Twit = require('twit');
 
 var User = mongoose.model("user");
 
+var DEFAULT_TIMEOUT = 30 * 1000;
+
 var TwitterService = function() {
 
 	if ( arguments.callee._singletonInstance )
@@ -16,6 +18,8 @@ var TwitterService = function() {
 	var _this = this;
 	var _public = {};
 
+	_this.interval = null;
+
 	_this.init = function() {
 		return _public;
 	};
@@ -24,6 +28,14 @@ var TwitterService = function() {
 
 		_this.listener = listener;
 		console.log("twitter> starting feed service");
+
+		_this.interval = setInterval(_this.refresh, DEFAULT_TIMEOUT);
+		_this.refresh();
+	};
+
+	_this.refresh = function(){
+
+		console.log("twitter> refreshing twitter feed");
 
 		User.find({
 
@@ -46,7 +58,12 @@ var TwitterService = function() {
 
 			}
 		})
-	};
+
+	}
+
+	_public.stop = function() {
+		clearInterval(_this.interval);
+	}
 
 	_this.bindUserStream = function(user) {
 

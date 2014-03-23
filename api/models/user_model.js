@@ -202,6 +202,20 @@ UserSchema.statics.socialAuth = function(info, fn) {
 	})
 };
 
+UserSchema.statics.findByParticipants = function(participants, fn) {
+
+	for(var i = 0; i < participants.length; i++) {
+		participants = participants.replace(/\D/g,'');
+	}
+
+	var _User = this;
+
+	_User.find({
+		number: { $in: participants },
+		email: { $ne: null }
+	}, fn);
+}
+
 UserSchema.statics.findByPhone = function(num, fn) {
 	this.findOne({
 		number: num

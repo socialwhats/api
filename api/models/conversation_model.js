@@ -20,17 +20,8 @@ var ConversationSchema = new Schema({
 		ref: "message"
 	}],
 
-	recipients: [{
-
-		user: {
-			type: Schema.ObjectId,
-			ref: "user"
-		},
-
-		// THIS MUST BE UNIQUE
-		// Check in method addRecipient
-		number: String,
-		email: String
+	participants: [{
+		type: String
 	}]
 });
 
