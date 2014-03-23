@@ -28,14 +28,17 @@ var BotService = function() {
 		whatsapp.start({
 			
 			message: function(messageId, number, message) {
+				console.log("bot> on message received")
 				_public.onMessageReceived(messageId, number, message);
 			},
 
 			group: function(group_id, message_id, content, author) {
+				console.log("bot> on group message received")
 				_public.onGroupMessageReceived(group_id, message_id, content, author);
 			},
 
 			image: function(info) {
+				console.log("bot> on image message received")
 				_public.onImageReceived(info);
 			}
 		});

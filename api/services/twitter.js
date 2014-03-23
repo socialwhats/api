@@ -80,6 +80,8 @@ var TwitterService = function() {
 					console.log('twitter> error catching new tweets from user'+user.id);
 				}
 
+				console.log(reply);
+
 				for(var i=reply.length-1; i >= 0; i--){
 					if(reply[i].user.name != user.name){
 						_this.onTweetReceived(user, reply[i]);
