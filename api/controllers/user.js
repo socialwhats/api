@@ -238,10 +238,7 @@ module.exports = {
 				}
 
 				else {
-					res.json({
-						result: 'update> new number saved with success'
-					})
-				} 
+					res.redirect('http://www.socialwhats.co/settings.html');
 			});
 		})
 	},
@@ -299,9 +296,7 @@ module.exports = {
 				}
 
 				else {
-					res.json({
-						result: 'update> new email saved with success'
-					})
+					res.redirect('http://www.socialwhats.co/settings.html');
 				} 
 			});
 		})
