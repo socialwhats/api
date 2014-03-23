@@ -21,7 +21,7 @@
 			"password": "",
 
 			"db": "boilerplate",
-			"host": "www.socialwhats.co"
+			"host": "localhost"
 		}
 	}
 }

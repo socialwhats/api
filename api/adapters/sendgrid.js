@@ -27,7 +27,7 @@ var SendGridAdapter = function() {
 
 		sendgrid.send({
 
-			to: to[0],
+			to: to,
 			from: "bot@socialwhats.co",
 			subject: subject,
 			text: message
